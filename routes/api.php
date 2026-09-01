@@ -1,7 +1,6 @@
 <?php
 
+use App\Http\Controllers\CreateUserController;
 use Illuminate\Support\Facades\Route;
 
-route::get('/', function () {
-    return 'connected...';
-});
+Route::post('/create-user', [CreateUserController::class, 'createUser']);
