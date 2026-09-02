@@ -29,4 +29,12 @@ class AuthController extends Controller
             ],
         ]);
     }
+
+    public function getUser(Request $request)
+    {
+        return response()->json([
+            'success' => true,
+            'data' => new userResource($request->user()),
+        ]);
+    }
 }
