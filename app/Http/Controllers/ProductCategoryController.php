@@ -1,0 +1,24 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Http\Requests\createCategory;
+use App\Models\ProductCategory;
+use Illuminate\Http\Request;
+
+class ProductCategoryController extends Controller
+{
+    public function createCategory(createCategory $request)
+    {
+        $data = $request->validated();
+        $data['category_image'] = $request
+            ->file('category_image')
+            ->store('product-categories', 'public');
+        $category = ProductCategory::create($data);
+        return response()->json([
+            'success' => true,
+            'message' => 'Product category created successfully.',
+            'data' => $category,
+        ], 201);
+    }
+}
