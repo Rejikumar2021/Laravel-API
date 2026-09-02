@@ -28,4 +28,17 @@ class ProductCategoryController extends Controller
         $categories = ProductCategory::latest()->get();
         return ProductCategoryResource::collection(($categories));
     }
+
+    public function getCategoryItem(Request $request)
+    {
+        $id = $request->route('id');
+        $item = ProductCategory::find($id);
+        if (!$item) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Invalid request'
+            ], 404);
+        }
+        return new ProductCategoryResource($item);
+    }
 }
