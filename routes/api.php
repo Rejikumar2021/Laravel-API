@@ -11,4 +11,5 @@ Route::post('/login', [AuthController::class, 'index'])->name('login');
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/me', [AuthController::class, 'getUser']);
     Route::post('/category', [ProductCategoryController::class, 'createCategory']);
+    Route::get('/categories', [ProductCategoryController::class, 'getAllCategories']);
 });

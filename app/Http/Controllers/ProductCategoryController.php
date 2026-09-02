@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\createCategory;
+use App\Http\Resources\ProductCategoryResource;
 use App\Models\ProductCategory;
 use Illuminate\Http\Request;
 
@@ -20,5 +21,11 @@ class ProductCategoryController extends Controller
             'message' => 'Product category created successfully.',
             'data' => $category,
         ], 201);
+    }
+
+    public function getAllCategories()
+    {
+        $categories = ProductCategory::latest()->get();
+        return ProductCategoryResource::collection(($categories));
     }
 }
