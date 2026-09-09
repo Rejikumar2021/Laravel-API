@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\createCategory;
+use App\Http\Requests\UpdateCategoryRequest;
 use App\Http\Resources\ProductCategoryResource;
 use App\Models\ProductCategory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProductCategoryController extends Controller
 {
@@ -40,5 +42,34 @@ class ProductCategoryController extends Controller
             ], 404);
         }
         return new ProductCategoryResource($item);
+    }
+
+    public function updateCategory(UpdateCategoryRequest $request)
+    {
+        $id = $request->route('id');
+        $data = $request->validated();
+        $category = ProductCategory::findOrFail($id);
+        if ($request->hasFile('category_image')) {
+            if ($category->category_image) {
+                Storage::disk('public')->delete($category->category_image);
+            }
+
+            $data['category_image'] = $request
+                ->file('category_image')
+                ->store('product-categories', 'public');
+        }
+
+        $category->update($data);
+        if (!$category->update($data)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Product category update failed.',
+            ], 500);
+        }
+        return response()->json([
+            'success' => true,
+            'message' => 'Product category updated successfully.',
+            'data' => $category,
+        ], 200);
     }
 }
