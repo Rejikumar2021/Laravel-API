@@ -72,4 +72,19 @@ class ProductCategoryController extends Controller
             'data' => $category,
         ], 200);
     }
+
+    public function deleteCategory(Request $request)
+    {
+        $id = $request->route('id');
+        $category = ProductCategory::findOrFail($id);
+        if ($category->category_image) {
+            Storage::disk('public')->delete($category->category_image);
+        }
+        $category->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Product category deleted successfully.',
+        ], 200);
+    }
 }

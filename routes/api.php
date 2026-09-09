@@ -14,4 +14,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/categories', [ProductCategoryController::class, 'getAllCategories']);
     Route::get('/categories/{id}', [ProductCategoryController::class, 'getCategoryItem']);
     Route::put('/categories/{id}', [ProductCategoryController::class, 'updateCategory']);
+    Route::delete('/categories/{id}', [ProductCategoryController::class, 'deleteCategory']);
 });
