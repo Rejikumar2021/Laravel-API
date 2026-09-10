@@ -38,7 +38,30 @@ class ProductController extends Controller
     public function getAllProducts(Request $request, $pageNumber)
     {
         $perPage = 10;
-        $products = product::with('galleries')->latest()->paginate($perPage, ['*'], 'page', $pageNumber);
+        $query = Product::with(['galleries', 'category']);
+
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+
+            $query->where(function ($q) use ($search) {
+                // Search product name
+                $q
+                    ->where('product_name', 'LIKE', "%{$search}%")
+                    // Search product description
+                    ->orWhere('product_description', 'LIKE', "%{$search}%")
+                    // Search category name
+                    ->orWhereHas('category', function ($categoryQuery) use ($search) {
+                        $categoryQuery->where(
+                            'category_name',
+                            'LIKE',
+                            "%{$search}%"
+                        );
+                    });
+            });
+        }
+        $products = $query
+            ->latest()
+            ->paginate($perPage, ['*'], 'page', $pageNumber);
         return response()->json([
             'success' => true,
             'products' => productResources::collection($products),
