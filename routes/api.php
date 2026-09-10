@@ -19,4 +19,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/product', [ProductController::class, 'createProduct']);
     Route::post('product/{id}/gallery', [ProductController::class, 'createProductGallery']);
     Route::get('/products/page/{pageNumber}', [ProductController::class, 'getAllProducts']);
+    Route::get('product/{id}', [ProductController::class, 'getProductById']);
 });

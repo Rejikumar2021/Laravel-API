@@ -73,4 +73,14 @@ class ProductController extends Controller
             ],
         ], 200);
     }
+
+    public function getProductById(Request $request)
+    {
+        $id = $request->route('id');
+        $product = Product::with(['galleries', 'category'])->findOrFail($id);
+        return response()->json([
+            'success' => true,
+            'products' => new productResources($product),
+        ], 200);
+    }
 }
