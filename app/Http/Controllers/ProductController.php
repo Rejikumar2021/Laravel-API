@@ -35,12 +35,19 @@ class ProductController extends Controller
         }
     }
 
-    public function getAllProducts(Request $request)
+    public function getAllProducts(Request $request, $pageNumber)
     {
-        $products = product::with('galleries')->latest()->get();
+        $perPage = 10;
+        $products = product::with('galleries')->latest()->paginate($perPage, ['*'], 'page', $pageNumber);
         return response()->json([
             'success' => true,
-            'products' => productResources::collection($products)
+            'products' => productResources::collection($products),
+            'pagination' => [
+                'current_page' => $products->currentPage(),
+                'last_page' => $products->lastPage(),
+                'per_page' => $products->perPage(),
+                'total_products' => $products->total(),
+            ],
         ], 200);
     }
 }
