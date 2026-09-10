@@ -83,4 +83,18 @@ class ProductController extends Controller
             'products' => new productResources($product),
         ], 200);
     }
+
+    public function updateProduct(CreateProductRequest $request)
+    {
+        $id = $request->route('id');
+        $data = $request->validated();
+        $product = product::findOrFail($id);
+        $product->update($data);
+    }
+
+    public function updateProductGallery(Request $request)
+    {
+        $id = $request->route('id');
+        return $id;
+    }
 }

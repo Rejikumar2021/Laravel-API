@@ -20,4 +20,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('product/{id}/gallery', [ProductController::class, 'createProductGallery']);
     Route::get('/products/page/{pageNumber}', [ProductController::class, 'getAllProducts']);
     Route::get('product/{id}', [ProductController::class, 'getProductById']);
+    Route::patch('product/{id}', [ProductController::class, 'updateProduct']);
+    Route::patch('product/{id}/gallery', [ProductController::class, 'updateProductGallery']);
 });
