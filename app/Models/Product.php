@@ -20,4 +20,9 @@ class Product extends Model
         'product_available_quantity',
         'sale_out_of_stock'
     ];
+
+    public function galleries()
+    {
+        return $this->hasMany(ProductGallery::class, 'product_id');
+    }
 }

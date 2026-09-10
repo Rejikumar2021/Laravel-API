@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateProductRequest;
 use App\Http\Requests\ValidateImageRequest;
+use App\Http\Resources\productResources;
 use App\Models\Product;
 use App\Models\productGallery;
 use Illuminate\Http\Request;
@@ -32,5 +33,14 @@ class ProductController extends Controller
                 'image' => $path
             ]);
         }
+    }
+
+    public function getAllProducts(Request $request)
+    {
+        $products = product::with('galleries')->latest()->get();
+        return response()->json([
+            'success' => true,
+            'products' => productResources::collection($products)
+        ], 200);
     }
 }
