@@ -11,9 +11,10 @@ class CreateUserController extends Controller
     public function createUser(CreateUserRequest $request)
     {
         $user = User::create($request->validated());
-        return response()->json([
-            'message' => 'User created successfully',
-            'user' => $user
-        ], 201);
+        // return response()->json([
+        //     'message' => 'User created successfully',
+        //     'user' => $user
+        // ], 201);
+        return back()->with('success', 'Registration success');
     }
 }
