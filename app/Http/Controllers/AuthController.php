@@ -7,6 +7,7 @@ use App\Http\resources\userResource;
 use App\Model\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
@@ -36,5 +37,16 @@ class AuthController extends Controller
             'success' => true,
             'data' => new userResource($request->user()),
         ]);
+    }
+
+    public function verifyLogin(userLoginRequest $request)
+    {
+        if (!Auth::attempt($request->only('email', 'password'))) {
+            throw ValidationException::withMessages([
+                'invalidUser' => 'Invalid username or password.',
+            ]);
+        }
+        $request->session()->regenerate();
+        return redirect()->intended('/dashboard');
     }
 }
